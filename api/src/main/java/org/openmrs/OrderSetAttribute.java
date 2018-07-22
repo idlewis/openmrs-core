@@ -19,6 +19,8 @@ import org.openmrs.attribute.BaseAttribute;
  */
 public class OrderSetAttribute extends BaseAttribute<OrderSetAttributeType, OrderSet> implements Attribute<OrderSetAttributeType, OrderSet> {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private Integer orderSetAttributeId;
 	
 	// BaseAttribute<OrderSet> has an "owner" property of type OrderSet, which we re-expose as "orderSet"
