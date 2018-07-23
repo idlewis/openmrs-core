@@ -15,6 +15,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.OrderSet;
+import org.openmrs.OrderSetAttribute;
 import org.openmrs.OrderSetAttributeType;
 import org.openmrs.OrderSetMember;
 import org.openmrs.api.APIException;
@@ -191,5 +192,15 @@ public class OrderSetServiceImpl extends BaseOpenmrsService implements OrderSetS
 	public OrderSetAttributeType getOrderSetAttributeTypeByName(String name) {
 		return dao.getOrderSetAttributeTypeByName(name);
 	}
+	
+	/**
+	 * @see org.openmrs.api.OrderSetService#getOrderSetAttributeByUuid(java.lang.String)
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public OrderSetAttribute getOrderSetAttributeByUuid(String uuid) {
+		return dao.getOrderSetAttributeByUuid(uuid);
+	}
+
 
 }
