@@ -35,6 +35,8 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Order;
 import org.openmrs.OrderFrequency;
 import org.openmrs.OrderGroup;
+import org.openmrs.OrderGroupAttribute;
+import org.openmrs.OrderGroupAttributeType;
 import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.User;
@@ -590,5 +592,67 @@ public class HibernateOrderDAO implements OrderDAO {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Order.class);
 		criteria.add(Restrictions.eq("orderType", orderType));
 		return !criteria.list().isEmpty();
+	}
+	
+	
+	/**
+	 * @see org.openmrs.api.db.OrderDAO#getAllOrderGroupAttributeTypes()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrderGroupAttributeType> getAllOrderGroupAttributeTypes() {
+		return sessionFactory.getCurrentSession().createCriteria(OrderGroupAttributeType.class).list();
+	}
+	
+	/**
+	 * @see org.openmrs.api.db.OrderDAO#getOrderGroupAttributeType(java.lang.Integer)
+	 */
+	@Override
+	public OrderGroupAttributeType getOrderGroupAttributeType(Integer id) {
+		return (OrderGroupAttributeType) sessionFactory.getCurrentSession().get(OrderGroupAttributeType.class, id);
+	}
+	
+	/**
+	 * @see org.openmrs.api.db.OrderDAO#getOrderGroupAttributeTypeByUuid(java.lang.String)
+	 */
+	@Override
+	public OrderGroupAttributeType getOrderGroupAttributeTypeByUuid(String uuid) {
+		return (OrderGroupAttributeType) sessionFactory.getCurrentSession().createCriteria(OrderGroupAttributeType.class).add(
+		    Restrictions.eq("uuid", uuid)).uniqueResult();
+	}
+	
+	/**
+	 * @see org.openmrs.api.db.OrderDAO#saveOrderGroupAttributeType(org.openmrs.OrderGroupAttributeType)
+	 */
+	@Override
+	public OrderGroupAttributeType saveOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType) {
+		sessionFactory.getCurrentSession().saveOrUpdate(orderGroupAttributeType);
+		return orderGroupAttributeType;
+	}
+	
+	/**
+	 * @see org.openmrs.api.db.OrderDAO#deleteOrderGroupAttributeType(org.openmrs.OrderGroupAttributeType)
+	 */
+	@Override
+	public void deleteOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType) {
+		sessionFactory.getCurrentSession().delete(orderGroupAttributeType);
+	}
+	
+	/**
+	 * @see org.openmrs.api.db.OrderDAO#getOrderGroupAttributeByUuid(java.lang.String)
+	 */
+	@Override
+	public OrderGroupAttribute getOrderGroupAttributeByUuid(String uuid) {
+		return (OrderGroupAttribute) sessionFactory.getCurrentSession().createCriteria(OrderGroupAttribute.class).add(
+		    Restrictions.eq("uuid", uuid)).uniqueResult();
+	}
+	
+	/**
+	 * @see org.openmrs.api.db.OrderDAO#getOrderGroupAttributeTypeByName(java.lang.String)
+	 */
+	@Override
+	public OrderGroupAttributeType getOrderGroupAttributeTypeByName(String name) {
+		return (OrderGroupAttributeType) sessionFactory.getCurrentSession().createCriteria(OrderGroupAttributeType.class).add(
+		    Restrictions.eq("name", name)).uniqueResult();
 	}
 }
