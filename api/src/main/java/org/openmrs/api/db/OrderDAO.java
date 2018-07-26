@@ -20,6 +20,8 @@ import org.openmrs.Encounter;
 import org.openmrs.Order;
 import org.openmrs.OrderFrequency;
 import org.openmrs.OrderGroup;
+import org.openmrs.OrderGroupAttribute;
+import org.openmrs.OrderGroupAttributeType;
 import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.User;
@@ -253,4 +255,40 @@ public interface OrderDAO {
 	 * @see org.openmrs.api.OrderService#getOrderGroup(Integer)
 	 */
 	public OrderGroup getOrderGroupById(Integer orderGroupId) throws DAOException;
+	
+	/**
+	 * @see OrderGroupService#getAllOrderGroupAttributeTypes()
+	 */
+	public List<OrderGroupAttributeType> getAllOrderGroupAttributeTypes();
+
+	/**
+	 * @see OrderGroupService#getOrderGroupAttributeType(Integer)
+	 */
+	public OrderGroupAttributeType getOrderGroupAttributeType(Integer id);
+
+	/**
+	 * @see OrderGroupService#getOrderGroupAttributeTypeByUuid(String)
+	 */
+	public OrderGroupAttributeType getOrderGroupAttributeTypeByUuid(String uuid);
+
+	/**
+	 * @see OrderGroupService#saveOrderGroupAttributeType(OrderGroupAttributeType)
+	 */
+	public OrderGroupAttributeType saveOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType);
+
+	/**
+	 * @see OrderGroupService#purgeOrderGroupAttributeType(OrderGroupAttributeType)
+	 */
+	public void deleteOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType);
+
+	/**
+	 * @see OrderGroupService#getOrderGroupAttributeByUuid(String)
+	 */
+	public OrderGroupAttribute getOrderGroupAttributeByUuid(String uuid);
+
+	/**
+	 * @see OrderGroupService#getOrderGroupAttributeTypeByName(String)
+	 */
+	public OrderGroupAttributeType getOrderGroupAttributeTypeByName(String name);
+
 }
