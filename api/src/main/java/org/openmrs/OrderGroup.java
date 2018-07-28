@@ -35,6 +35,12 @@ public class OrderGroup extends BaseChangeableOpenmrsData {
 	
 	private OrderSet orderSet;
 	
+	private Concept orderGroupReason;
+	
+	private OrderGroup parentOrderGroup;
+	
+	private OrderGroup previousOrderGroup;
+	
 	/**
 	 * Gets the orderGroupId
 	 *
@@ -196,6 +202,60 @@ public class OrderGroup extends BaseChangeableOpenmrsData {
 	@Override
 	public void setId(Integer id) {
 		setOrderGroupId(id);
+	}
+
+	/**
+	 * Gets the order group reason
+	 * 
+	 * @return orderGroupReason
+	 */
+	public Concept getOrderGroupReason() {
+		return orderGroupReason;
+	}
+	
+	/**
+	 * Sets the orderGroupReason
+	 *
+	 * @param orderGroupReason the orderGroupReason to set
+	 */
+	public void setOrderGroupReason(Concept orderGroupReason) {
+		this.orderGroupReason = orderGroupReason;
+	}
+
+	/**
+	 * Gets the parentOrderGroup
+	 * 
+	 * @return parentOrderGroup
+	 */
+	public OrderGroup getParentOrderGroup() {
+		return parentOrderGroup;
+	}
+	
+	/**
+	 * Sets the parentOrderGroup
+	 *
+	 * @param parentOrderGroup the parentOrderGroup to set
+	 */
+	public void setParentOrderGroup(OrderGroup parentOrderGroup) {
+		this.parentOrderGroup = parentOrderGroup;
+	}
+
+	/**
+	 * Gets the previousOrderGroup
+	 * 
+	 * @return previousOrderGroup
+	 */
+	public OrderGroup getPreviousOrderGroup() {
+		return previousOrderGroup;
+	}
+	
+	/**
+	 * Sets the orderGroupReason
+	 *
+	 * @param orderGroupReason the orderGroupReason to set
+	 */
+	public void sePreviousOrderGroup(OrderGroup previousOrderGroup) {
+		this.previousOrderGroup = previousOrderGroup;
 	}
 	
 }

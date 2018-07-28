@@ -305,4 +305,52 @@
 								 referencedTableName="concept"
 								 referencedColumnNames="concept_id" />
 	</changeSet>
+	
+	<changeSet id="20180728-1211-TRUNK-" author="rdahlman3">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="order_reason_concept_id" tableName="order_group"/>
+			</not>
+		</preConditions>
+		<comment>Adding 'order_reason_concept_id' column to order group table</comment>
+		<addColumn tableName="order_group">
+			<column name="order_reason_concept_id" type="int" />
+		</addColumn>
+		<addForeignKeyConstraint constraintName="order_group_order_reason_concept_fk"
+			baseTableName="order_group" baseColumnNames="order_reason_concept_id"
+			referencedTableName="concept" referencedColumnNames="concept_id" />
+	</changeSet>
+	
+    <changeSet id="201807281250-TRUNK-" author="rdahlman3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+            		<columnExists columnName="previous_order_group_id" tableName="order_group"/>
+            	</not>
+        </preConditions>
+
+        <comment>Adding 'previous_order_group_id' to order_group table</comment>
+
+        <addColumn tableName="order_group">
+            <column name="previous_order_group_id" type="int" />
+        </addColumn>
+
+        <addForeignKeyConstraint constraintName="order_group_previous_order_group_id" baseTableName="order_group" baseColumnNames="previous_order_group_id" referencedTableName="order_group" referencedColumnNames="order_group_id"/>
+    </changeSet>
+	
+    <changeSet id="201807281258-TRUNK-" author="rdahlman3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+            		<columnExists columnName="parent_order_group_id" tableName="order_group"/>
+            	</not>
+        </preConditions>
+
+        <comment>Adding 'parent_order_group_id' to order_group table</comment>
+
+        <addColumn tableName="order_group">
+            <column name="parent_order_group_id" type="int" />
+        </addColumn>
+
+        <addForeignKeyConstraint constraintName="order_group_parent_order_group_id" baseTableName="order_group" baseColumnNames="parent_order_group_id" referencedTableName="order_group" referencedColumnNames="order_group_id"/>
+    </changeSet>
+	
 </databaseChangeLog>
