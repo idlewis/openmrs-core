@@ -35,6 +35,8 @@
                 <param name="useNamed">true</param>
             </type>
         </property>
+        <many-to-one name="category" class="Concept"
+			column="category_concept_id" />
 
         <list name="orderSetMembers" lazy="true" cascade="save-update" inverse="false">
             <key column="order_set_id" not-null="true"/>

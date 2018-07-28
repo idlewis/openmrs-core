@@ -40,6 +40,8 @@ public class OrderSet extends BaseChangeableOpenmrsMetadata {
 	
 	private List<OrderSetMember> orderSetMembers;
 	
+	private Concept category;
+	
 	/**
 	 * Gets the orderSetId
 	 *
@@ -178,6 +180,24 @@ public class OrderSet extends BaseChangeableOpenmrsMetadata {
 	 */
 	public void retireOrderSetMember(OrderSetMember orderSetMember) {
 		orderSetMember.setRetired(true);
+	}
+	
+	/**
+	 * Gets the category
+	 *
+	 * @return the category
+	 */
+	public Concept getCategory() {
+		return category;
+	}
+	
+	/**
+	 * Sets the operator
+	 *
+	 * @param operator the operator to set
+	 */
+	public void setCategory(Concept category) {
+		this.category = category;
 	}
 	
 }

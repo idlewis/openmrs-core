@@ -9086,6 +9086,7 @@
 	</changeSet>
 	
 	<changeSet id="20151006-1530" author="bahmni">
+	<!-- <changeSet id="20180727-2107" author="rdahlman3"> -->
 		<preConditions onFail="MARK_RAN">
 			<not>
 				<tableExists tableName="order_set" />
@@ -9105,6 +9106,7 @@
 				<constraints nullable="false"/>
 			</column>
 			<column name="description" type="varchar(1000)"/>
+			<!-- <column name="category_id" type="int"/> -->
 			<column name="creator" type="int">
 				<constraints nullable="false"/>
 			</column>
@@ -9132,6 +9134,9 @@
 		<addForeignKeyConstraint constraintName="order_set_changed_by_fk"
 								 baseTableName="order_set" baseColumnNames="changed_by"
 								 referencedTableName="users" referencedColumnNames="user_id"/>
+		<!-- <addForeignKeyConstraint constraintName="order_set_category_concept_fk"
+			baseTableName="order_set" baseColumnNames="category_concept_id"
+			referencedTableName="concept" referencedColumnNames="concept_id" /> -->
 	</changeSet>
 	<changeSet id="20151006-1537" author="bahmni">
 		<preConditions onFail="MARK_RAN">
@@ -9553,6 +9558,24 @@
 		<createIndex tableName="concept_reference_map" indexName="concept_reference_map_uuid_id" unique="true">
 			<column name="uuid"/>
 		</createIndex>
+	</changeSet>
+	
+	
+
+
+	<changeSet id="20180728-0922" author="rdahlman3">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="category_concept_id" tableName="order_set"/>
+			</not>
+		</preConditions>
+		<comment>Adding 'category' column to order set table</comment>
+		<addColumn tableName="order_set">
+			<column name="category_concept_id" type="int"/>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="order_set_category_concept_fk"
+			baseTableName="order_set" baseColumnNames="category_concept_id"
+			referencedTableName="concept" referencedColumnNames="concept_id" />
 	</changeSet>
 
 </databaseChangeLog>
