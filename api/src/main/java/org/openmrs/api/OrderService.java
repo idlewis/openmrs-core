@@ -756,6 +756,15 @@ public interface OrderService extends OpenmrsService {
 	public Concept getNonCodedDrugConcept();
 	
 	/**
+	 * Fetches all OrderGroups for a given patient
+	 * @param patient the patient to match on
+	 * @return list of OrderGroup matching the parameters
+	 * @should fail if patient is null
+	 */
+	public List<OrderGroup> getOrderGroupsByPatient(Patient patient) throws APIException;
+	
+	
+	/**
 	 * Fetches the OrderGroup By Uuid.
 	 * 
 	 * @param uuid Uuid Of the OrderGroup
