@@ -232,6 +232,17 @@ public class HibernateOrderDAO implements OrderDAO {
 	public OrderGroup getOrderGroupById(Integer orderGroupId) throws DAOException {
 		return (OrderGroup) sessionFactory.getCurrentSession().get(OrderGroup.class, orderGroupId);
 	}
+
+	/**
+	 * @see OrderDAO#getOrderGroupByPatientUuid(List<Integer>)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrderGroup> getOrderGroupsByPatient(Patient patients) throws DAOException {
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(OrderGroup.class);
+		crit.add(Restrictions.eq("patient", patients));
+		return crit.list();
+	}
 	
 	/**
 	 * Delete Obs that references (deleted) Order

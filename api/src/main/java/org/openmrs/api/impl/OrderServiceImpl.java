@@ -1032,6 +1032,15 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 		return dao.getOrderGroupById(orderGroupId);
 	}
 	
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderGroup> getOrderGroupsByPatient(Patient patient) throws APIException {
+		if (patient == null) {
+			throw new IllegalArgumentException("Patient is required");
+		}
+		return dao.getOrderGroupsByPatient(patient);
+	}
+	
 	private List<Concept> getSetMembersOfConceptSetFromGP(String globalProperty) {
 		String conceptUuid = Context.getAdministrationService().getGlobalProperty(globalProperty);
 		Concept concept = Context.getConceptService().getConceptByUuid(conceptUuid);
