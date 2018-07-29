@@ -313,7 +313,7 @@
 				<columnExists columnName="category_concept_id" tableName="order_set"/>
 			</not>
 		</preConditions>
-		<comment>Adding 'category' column to order set table</comment>
+		<comment>Adding 'category_concept_id' column to order set table</comment>
 		<addColumn tableName="order_set">
 			<column name="category_concept_id" type="int"/>
 		</addColumn>
