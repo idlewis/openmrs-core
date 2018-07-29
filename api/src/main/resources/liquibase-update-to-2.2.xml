@@ -306,7 +306,6 @@
 								 referencedColumnNames="concept_id" />
 	</changeSet>
 	
-	
 	<changeSet id="201807280922-TRUNK-" author="rdahlman3">
 		<preConditions onFail="MARK_RAN">
 			<not>

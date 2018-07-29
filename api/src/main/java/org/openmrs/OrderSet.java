@@ -192,12 +192,11 @@ public class OrderSet extends BaseChangeableOpenmrsMetadata {
 	}
 	
 	/**
-	 * Sets the operator
+	 * Sets the category
 	 *
-	 * @param operator the operator to set
+	 * @param category the category to set
 	 */
 	public void setCategory(Concept category) {
 		this.category = category;
 	}
-	
 }
