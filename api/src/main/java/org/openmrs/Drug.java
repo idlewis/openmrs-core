@@ -51,6 +51,8 @@ public class Drug extends BaseChangeableOpenmrsMetadata {
 	
 	private Collection<DrugIngredient> ingredients;
 	
+	private Concept doseLimitUnits;
+	
 	// Constructors
 	
 	/** default constructor */
@@ -275,5 +277,19 @@ public class Drug extends BaseChangeableOpenmrsMetadata {
 			}
 			getDrugReferenceMaps().add(drugReferenceMap);
 		}
+	}
+
+	/**
+	 * @return the doseLimitUnits
+	 */
+	public Concept getDoseLimitUnits() {
+		return doseLimitUnits;
+	}
+
+	/**
+	 * @param doseLimitUnits the doseLimitUnits to set
+	 */
+	public void setDoseLimitUnits(Concept doseLimitUnits) {
+		this.doseLimitUnits = doseLimitUnits;
 	}
 }
