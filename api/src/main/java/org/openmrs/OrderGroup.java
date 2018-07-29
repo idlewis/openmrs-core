@@ -250,11 +250,11 @@ public class OrderGroup extends BaseCustomizableData<OrderGroupAttribute> {
 	}
 	
 	/**
-	 * Sets the orderGroupReason
+	 * Sets the previousOrderGroup
 	 *
-	 * @param orderGroupReason the orderGroupReason to set
+	 * @param previousOrderGroup the orderGroupReason to set
 	 */
-	public void sePreviousOrderGroup(OrderGroup previousOrderGroup) {
+	public void setPreviousOrderGroup(OrderGroup previousOrderGroup) {
 		this.previousOrderGroup = previousOrderGroup;
 	}
 	
