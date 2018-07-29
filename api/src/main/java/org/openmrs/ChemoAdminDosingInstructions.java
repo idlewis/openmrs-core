@@ -59,7 +59,7 @@ public class ChemoAdminDosingInstructions implements DosingInstructions {
 	@Override
 	public void setDosingInstructions(DrugOrder order) {
 
-    System.err.printf("ENTER ChemoAdminDosingInstructions::setDosingInstructions(): %s\n",order.toString());
+    //System.err.printf("ENTER ChemoAdminDosingInstructions::setDosingInstructions(): %s\n",order.toString());
 
     // set dosing instruction type to "chemo admin" type
 		order.setDosingType(this.getClass());
@@ -69,9 +69,9 @@ public class ChemoAdminDosingInstructions implements DosingInstructions {
     // canonical format of encoded chemo admin dosing instruction string:
     // "{"adjustment": "<int>", "dilution": "<string>", "timing": "<string>"}
 
-    order.setDosingInstructions("I added this in ChemoAdminDosingInstructions::setDosingInstructions() method!!");
+    //order.setDosingInstructions("I added this in ChemoAdminDosingInstructions::setDosingInstructions() method!!");
 
-    System.err.printf("EXIT ChemoAdminDosingInstructions::setDosingInstructions(): %s\n",order.toString());
+    //System.err.printf("EXIT ChemoAdminDosingInstructions::setDosingInstructions(): %s\n",order.toString());
 
     // store dosing instructions seralized JSON string into DrugOrder object
 		//order.setDosingInstructions(getDosingInstructionsAsString(Locale.getDefault()));
