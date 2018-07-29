@@ -69,11 +69,11 @@
         <property name="uuid" type="java.lang.String"
                   column="uuid" length="38" unique="true" not-null="true"/>
 		<!-- bi-directional many-to-one association to Concept -->
-		<many-to-one name="order_reason" column="order_reason_concept_id" class="org.openmrs.Concept" />
-        <!-- bi-directional many-to-one association to OrderGroup -->        
-        <many-to-one name="previousOrderGroup" class="org.openmrs.OrderGroup" column="previous_order_group_id" />
+		<many-to-one name="orderGroupReason" column="order_group_reason_concept_id" class="Concept" />
         <!-- bi-directional many-to-one association to OrderGroup -->    
-        <many-to-one name="parentOrderGroup" class="org.openmrs.OrderGroup" column="parent_order_group_id" />
+        <many-to-one name="parentOrderGroup" column="parent_order_group_id" class="OrderGroup" />
+        <!-- bi-directional many-to-one association to OrderGroup -->        
+        <many-to-one name="previousOrderGroup" column="previous_order_group_id" class="OrderGroup" />
 
     </class>
 
