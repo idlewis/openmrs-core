@@ -334,7 +334,9 @@
             <column name="parent_order_group_id" type="int" />
         </addColumn>
 
-        <addForeignKeyConstraint constraintName="order_group_parent_order_group_id" baseTableName="order_group" baseColumnNames="parent_order_group_id" referencedTableName="order_group" referencedColumnNames="order_group_id"/>
+        <addForeignKeyConstraint constraintName="order_group_parent_order_group_id" 
+        		baseTableName="order_group" baseColumnNames="parent_order_group_id" 
+        		referencedTableName="order_group" referencedColumnNames="order_group_id"/>
     </changeSet>
     
    <changeSet id="201807281250-TRUNK-" author="rdahlman3">
@@ -350,7 +352,9 @@
             <column name="previous_order_group_id" type="int" />
         </addColumn>
 
-        <addForeignKeyConstraint constraintName="order_group_previous_order_group_id" baseTableName="order_group" baseColumnNames="previous_order_group_id" referencedTableName="order_group" referencedColumnNames="order_group_id"/>
+        <addForeignKeyConstraint constraintName="order_group_previous_order_group_id" 
+        		baseTableName="order_group" baseColumnNames="previous_order_group_id" 
+        		referencedTableName="order_group" referencedColumnNames="order_group_id"/>
     </changeSet>
 	
 </databaseChangeLog>
