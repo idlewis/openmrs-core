@@ -20,7 +20,7 @@ import org.openmrs.api.APIException;
  * 
  * @since 1.12
  */
-public class OrderSet extends BaseChangeableOpenmrsMetadata {
+public class OrderSet extends BaseCustomizableMetadata<OrderSetAttribute> {
 	
 	public static final long serialVersionUID = 72232L;
 	
@@ -39,6 +39,8 @@ public class OrderSet extends BaseChangeableOpenmrsMetadata {
 	private Operator operator;
 	
 	private List<OrderSetMember> orderSetMembers;
+	
+	private Concept category;
 	
 	/**
 	 * Gets the orderSetId
@@ -180,4 +182,21 @@ public class OrderSet extends BaseChangeableOpenmrsMetadata {
 		orderSetMember.setRetired(true);
 	}
 	
+	/**
+	 * Gets the category
+	 *
+	 * @return the category
+	 */
+	public Concept getCategory() {
+		return category;
+	}
+	
+	/**
+	 * Sets the category
+	 *
+	 * @param category the category to set
+	 */
+	public void setCategory(Concept category) {
+		this.category = category;
+	}
 }
