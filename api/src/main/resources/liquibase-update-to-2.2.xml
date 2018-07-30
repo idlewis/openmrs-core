@@ -306,6 +306,21 @@
 								 referencedColumnNames="concept_id" />
 	</changeSet>
 	
+	<changeSet id="201807281414-TRUNK-" author="rdahlman3">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists columnName="dose_limit_units" tableName="drug"/>
+			</not>
+		</preConditions>
+		<comment>Adding 'dose_limit_units' column to drug table</comment>
+		<addColumn tableName="drug">
+			<column name="dose_limit_units" type="int"/>
+		</addColumn>
+		<addForeignKeyConstraint constraintName="drug_dose_limit_units_concept_fk"
+			baseTableName="drug" baseColumnNames="dose_limit_units"
+			referencedTableName="concept" referencedColumnNames="concept_id" />
+	</changeSet>
+
 	<changeSet id="201807280922-TRUNK-" author="rdahlman3">
 		<preConditions onFail="MARK_RAN">
 			<not>
