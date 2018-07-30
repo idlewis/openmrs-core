@@ -103,10 +103,10 @@ public class HibernateObsDAO implements ObsDAO {
 	public List<Obs> getObservations(List<Person> whom, List<Encounter> encounters, List<Concept> questions,
 	        List<Concept> answers, List<PERSON_TYPE> personTypes, List<Location> locations, List<String> sortList,
 	        Integer mostRecentN, Integer obsGroupId, Date fromDate, Date toDate, boolean includeVoidedObs,
-	        String accessionNumber) throws DAOException {
+	        String accessionNumber, List<org.openmrs.Order> orders) throws DAOException {
 		
 		Criteria criteria = createGetObservationsCriteria(whom, encounters, questions, answers, personTypes, locations,
-		    sortList, mostRecentN, obsGroupId, fromDate, toDate, null, includeVoidedObs, accessionNumber);
+		    sortList, mostRecentN, obsGroupId, fromDate, toDate, null, includeVoidedObs, accessionNumber, orders);
 		
 		return criteria.list();
 	}
@@ -120,7 +120,7 @@ public class HibernateObsDAO implements ObsDAO {
 	        Date fromDate, Date toDate, List<ConceptName> valueCodedNameAnswers, boolean includeVoidedObs,
 	        String accessionNumber) throws DAOException {
 		Criteria criteria = createGetObservationsCriteria(whom, encounters, questions, answers, personTypes, locations,
-		    null, null, obsGroupId, fromDate, toDate, valueCodedNameAnswers, includeVoidedObs, accessionNumber);
+		    null, null, obsGroupId, fromDate, toDate, valueCodedNameAnswers, includeVoidedObs, accessionNumber, null);
 		criteria.setProjection(Projections.rowCount());
 		return (Long) criteria.list().get(0);
 	}
@@ -146,7 +146,7 @@ public class HibernateObsDAO implements ObsDAO {
 	private Criteria createGetObservationsCriteria(List<Person> whom, List<Encounter> encounters, List<Concept> questions,
 	        List<Concept> answers, List<PERSON_TYPE> personTypes, List<Location> locations, List<String> sortList,
 	        Integer mostRecentN, Integer obsGroupId, Date fromDate, Date toDate, List<ConceptName> valueCodedNameAnswers,
-	        boolean includeVoidedObs, String accessionNumber) {
+	        boolean includeVoidedObs, String accessionNumber, List<org.openmrs.Order> orders) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Obs.class, "obs");
 		
 		if (CollectionUtils.isNotEmpty(whom)) {
@@ -171,6 +171,10 @@ public class HibernateObsDAO implements ObsDAO {
 		
 		if (CollectionUtils.isNotEmpty(locations)) {
 			criteria.add(Restrictions.in("location", locations));
+		}
+		
+		if (CollectionUtils.isNotEmpty(orders)) {
+			criteria.add(Restrictions.in("order", orders));
 		}
 		
 		if (CollectionUtils.isNotEmpty(sortList)) {
