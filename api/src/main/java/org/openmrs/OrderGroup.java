@@ -11,6 +11,7 @@ package org.openmrs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.openmrs.api.APIException;
 
@@ -21,7 +22,7 @@ import org.openmrs.api.APIException;
  * 
  * @since 1.12
  */
-public class OrderGroup extends BaseChangeableOpenmrsData {
+public class OrderGroup extends BaseCustomizableData<OrderGroupAttribute> {
 	
 	public static final long serialVersionUID = 72232L;
 	
@@ -34,6 +35,14 @@ public class OrderGroup extends BaseChangeableOpenmrsData {
 	private List<Order> orders;
 	
 	private OrderSet orderSet;
+	
+	private Concept orderGroupReason;
+	
+	private OrderGroup parentOrderGroup;
+	
+	private OrderGroup previousOrderGroup;
+	
+	private Set<OrderGroup> nestedOrderGroups;
 	
 	/**
 	 * Gets the orderGroupId
@@ -196,6 +205,76 @@ public class OrderGroup extends BaseChangeableOpenmrsData {
 	@Override
 	public void setId(Integer id) {
 		setOrderGroupId(id);
+	}
+
+	/**
+	 * Gets the order group reason
+	 * 
+	 * @return orderGroupReason
+	 */
+	public Concept getOrderGroupReason() {
+		return orderGroupReason;
+	}
+	
+	/**
+	 * Sets the orderGroupReason
+	 *
+	 * @param orderGroupReason the orderGroupReason to set
+	 */
+	public void setOrderGroupReason(Concept orderGroupReason) {
+		this.orderGroupReason = orderGroupReason;
+	}
+
+	/**
+	 * Gets the parentOrderGroup
+	 * 
+	 * @return parentOrderGroup
+	 */
+	public OrderGroup getParentOrderGroup() {
+		return parentOrderGroup;
+	}
+	
+	/**
+	 * Sets the parentOrderGroup
+	 *
+	 * @param parentOrderGroup the parentOrderGroup to set
+	 */
+	public void setParentOrderGroup(OrderGroup parentOrderGroup) {
+		this.parentOrderGroup = parentOrderGroup;
+	}
+
+	/**
+	 * Gets the previousOrderGroup
+	 * 
+	 * @return previousOrderGroup
+	 */
+	public OrderGroup getPreviousOrderGroup() {
+		return previousOrderGroup;
+	}
+	
+	/**
+	 * Sets the previousOrderGroup
+	 *
+	 * @param previousOrderGroup the orderGroupReason to set
+	 */
+	public void setPreviousOrderGroup(OrderGroup previousOrderGroup) {
+		this.previousOrderGroup = previousOrderGroup;
+	}
+	
+	/**
+	 * Gets the nestedOrderGroups
+	 * @return nestedOrderGroups
+	 */
+	public Set<OrderGroup> getNestedOrderGroups() {
+		return this.nestedOrderGroups;
+	}
+	
+	/**
+	 * Sets the nestedOrderGroups
+	 * @param nestedOrderGroups
+	 */
+	public void setNestedOrderGroups(Set<OrderGroup> nestedOrderGroups) {
+		this.nestedOrderGroups = nestedOrderGroups;
 	}
 	
 }

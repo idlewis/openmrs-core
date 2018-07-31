@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.proxy.HibernateProxy;
@@ -32,6 +33,8 @@ import org.openmrs.GlobalProperty;
 import org.openmrs.Order;
 import org.openmrs.OrderFrequency;
 import org.openmrs.OrderGroup;
+import org.openmrs.OrderGroupAttribute;
+import org.openmrs.OrderGroupAttributeType;
 import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
@@ -39,20 +42,21 @@ import org.openmrs.TestOrder;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AmbiguousOrderException;
 import org.openmrs.api.CannotDeleteObjectInUseException;
+import org.openmrs.api.CannotStopDiscontinuationOrderException;
+import org.openmrs.api.CannotStopInactiveOrderException;
+import org.openmrs.api.CannotUnvoidOrderException;
 import org.openmrs.api.CannotUpdateObjectInUseException;
+import org.openmrs.api.EditedOrderDoesNotMatchPreviousException;
 import org.openmrs.api.GlobalPropertyListener;
 import org.openmrs.api.MissingRequiredPropertyException;
 import org.openmrs.api.OrderContext;
+import org.openmrs.api.OrderEntryException;
 import org.openmrs.api.OrderNumberGenerator;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.UnchangeableObjectException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.OrderDAO;
-import org.openmrs.api.CannotStopDiscontinuationOrderException;
-import org.openmrs.api.CannotStopInactiveOrderException;
-import org.openmrs.api.CannotUnvoidOrderException;
-import org.openmrs.api.EditedOrderDoesNotMatchPreviousException;
-import org.openmrs.api.OrderEntryException;
+import org.openmrs.customdatatype.CustomDatatypeUtil;
 import org.openmrs.order.OrderUtil;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.util.OpenmrsUtil;
@@ -106,12 +110,24 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 	@Override
 	public OrderGroup saveOrderGroup(OrderGroup orderGroup) throws APIException {
 		if (orderGroup.getId() == null) {
+			// an OrderGroup requires an encounter, which has a patient, so it
+			// is odd that OrderGroup has a patient field. There is no obvious
+			// reason why they should ever be different.
+			orderGroup.setPatient(orderGroup.getEncounter().getPatient());
+			CustomDatatypeUtil.saveAttributesIfNecessary(orderGroup);
 			dao.saveOrderGroup(orderGroup);
 		}
 		List<Order> orders = orderGroup.getOrders();
 		for (Order order : orders) {
 			if (order.getId() == null) {
+				order.setEncounter(orderGroup.getEncounter());
 				saveOrder(order, null);
+			}
+		}
+		Set<OrderGroup> nestedGroups = orderGroup.getNestedOrderGroups();
+		if (nestedGroups != null) {
+			for (OrderGroup nestedGroup : nestedGroups) {
+				Context.getOrderService().saveOrderGroup(nestedGroup);
 			}
 		}
 		return orderGroup;
@@ -1028,6 +1044,15 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 		return dao.getOrderGroupById(orderGroupId);
 	}
 	
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderGroup> getOrderGroupsByPatient(Patient patient) throws APIException {
+		if (patient == null) {
+			throw new IllegalArgumentException("Patient is required");
+		}
+		return dao.getOrderGroupsByPatient(patient);
+	}
+	
 	private List<Concept> getSetMembersOfConceptSetFromGP(String globalProperty) {
 		String conceptUuid = Context.getAdministrationService().getGlobalProperty(globalProperty);
 		Concept concept = Context.getConceptService().getConceptByUuid(conceptUuid);
@@ -1035,5 +1060,83 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 			return concept.getSetMembers();
 		}
 		return Collections.emptyList();
+	}
+	
+	/**
+	 * @see org.openmrs.api.OrderGroupService#getAllOrderGroupAttributeTypes()
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<OrderGroupAttributeType> getAllOrderGroupAttributeTypes() {
+		return dao.getAllOrderGroupAttributeTypes();
+	}
+
+	/**
+	 * @see org.openmrs.api.OrderGroupService#getOrderGroupAttributeType(java.lang.Integer)
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public OrderGroupAttributeType getOrderGroupAttributeType(Integer id) {
+		return dao.getOrderGroupAttributeType(id);
+	}
+
+	/**
+	 * @see org.openmrs.api.OrderGroupService#getOrderGroupAttributeTypeByUuid(java.lang.String)
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public OrderGroupAttributeType getOrderGroupAttributeTypeByUuid(String uuid) {
+		return dao.getOrderGroupAttributeTypeByUuid(uuid);
+	}
+
+	/**
+	 * @see org.openmrs.api.OrderGroupService#saveOrderGroupAttributeType(org.openmrs.OrderGroupAttributeType)
+	 */
+	@Override
+	public OrderGroupAttributeType saveOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType) {
+		return dao.saveOrderGroupAttributeType(orderGroupAttributeType);
+	}
+
+	/**
+	 * @see org.openmrs.api.OrderGroupService#retireOrderGroupAttributeType(org.openmrs.OrderGroupAttributeType,
+	 *      java.lang.String)
+	 */
+	@Override
+	public OrderGroupAttributeType retireOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType, String reason) {
+		return dao.saveOrderGroupAttributeType(orderGroupAttributeType);
+	}
+
+	/**
+	 * @see org.openmrs.api.OrderGroupService#unretireOrderGroupAttributeType(org.openmrs.OrderGroupAttributeType)
+	 */
+	@Override
+	public OrderGroupAttributeType unretireOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType) {
+		return Context.getOrderService().saveOrderGroupAttributeType(orderGroupAttributeType);
+	}
+
+	/**
+	 * @see org.openmrs.api.OrderGroupService#purgeOrderGroupAttributeType(org.openmrs.OrderGroupAttributeType)
+	 */
+	@Override
+	public void purgeOrderGroupAttributeType(OrderGroupAttributeType orderGroupAttributeType) {
+		dao.deleteOrderGroupAttributeType(orderGroupAttributeType);
+	}
+
+	/**
+	 * @see org.openmrs.api.OrderGroupService#getOrderGroupAttributeTypeByName(java.lang.String)
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public OrderGroupAttributeType getOrderGroupAttributeTypeByName(String name) {
+		return dao.getOrderGroupAttributeTypeByName(name);
+	}
+
+	/**
+	 * @see org.openmrs.api.OrderGroupService#getOrderGroupAttributeByUuid(java.lang.String)
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public OrderGroupAttribute getOrderGroupAttributeByUuid(String uuid) {
+		return dao.getOrderGroupAttributeByUuid(uuid);
 	}
 }
