@@ -18,6 +18,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.util.Date;
+import java.util.Locale;
 
 import org.junit.Test;
 import org.openmrs.order.OrderUtilTest;
@@ -26,7 +27,7 @@ import org.openmrs.order.OrderUtilTest;
  * Contains tests for DrugOrder
  */
 public class DrugOrderTest {
-	
+
 	/**
 	 * @see DrugOrder#cloneForDiscontinuing()
 	 */
@@ -39,24 +40,24 @@ public class DrugOrderTest {
 		drug.setConcept(new Concept());
 		order.setDrug(drug);
 		order.setOrderType(new OrderType());
-		
+
 		DrugOrder dcOrder = order.cloneForDiscontinuing();
-		
+
 		assertEquals(order.getDrug(), dcOrder.getDrug());
-		
+
 		assertEquals(order.getPatient(), dcOrder.getPatient());
-		
+
 		assertEquals(order.getConcept(), dcOrder.getConcept());
-		
+
 		assertEquals("should set previous order to anOrder", order, dcOrder.getPreviousOrder());
-		
+
 		assertEquals("should set new order action to new", dcOrder.getAction(), Order.Action.DISCONTINUE);
-		
+
 		assertEquals(order.getCareSetting(), dcOrder.getCareSetting());
-		
+
 		assertEquals(order.getOrderType(), dcOrder.getOrderType());
 	}
-	
+
 	/**
 	 * @throws Exception
 	 * @see DrugOrder#copy()
@@ -67,11 +68,11 @@ public class DrugOrderTest {
 		Drug drug = new Drug();
 		drug.setConcept(new Concept());
 		drugOrder.setDrug(drug);
-		
+
 		OrderTest.assertThatAllFieldsAreCopied(drugOrder, null);
-		
+
 	}
-	
+
 	/**
 	 * @throws Exception
 	 * @see DrugOrder#cloneForRevision()
@@ -86,7 +87,7 @@ public class DrugOrderTest {
 		    "changedBy", "dateChanged", "voided", "dateVoided", "voidedBy", "voidReason", "encounter", "orderNumber",
 		    "orderer", "previousOrder", "dateActivated", "dateStopped", "accessionNumber");
 	}
-	
+
 	/**
 	 * @throws Exception
 	 * @see DrugOrder#cloneForRevision()
@@ -101,7 +102,7 @@ public class DrugOrderTest {
 		order.setAccessionNumber("some number");
 		OrderUtilTest.setDateStopped(order, date);
 		order.setPreviousOrder(new Order());
-		
+
 		Order clone = order.cloneForRevision();
 		assertEquals(Order.Action.DISCONTINUE, clone.getAction());
 		assertEquals(order.getDateActivated(), clone.getDateActivated());
@@ -110,7 +111,7 @@ public class DrugOrderTest {
 		assertNull(clone.getDateStopped());
 		assertNull(clone.getAccessionNumber());
 	}
-	
+
 	/**
 	 * @see DrugOrder#hasSameOrderableAs(Order)
 	 */
@@ -118,10 +119,10 @@ public class DrugOrderTest {
 	public void hasSameOrderableAs_shouldReturnFalseIfTheOtherOrderIsNull() {
 		DrugOrder order = new DrugOrder();
 		order.setConcept(new Concept());
-		
+
 		assertFalse(order.hasSameOrderableAs(null));
 	}
-	
+
 	/**
 	 * @see DrugOrder#hasSameOrderableAs(Order)
 	 */
@@ -132,13 +133,13 @@ public class DrugOrderTest {
 		Concept concept = new Concept();
 		drug1.setConcept(concept);
 		order.setDrug(drug1);
-		
+
 		Order otherOrder = new Order();
 		otherOrder.setConcept(concept);
-		
+
 		assertFalse(order.hasSameOrderableAs(otherOrder));
 	}
-	
+
 	/**
 	 * @see DrugOrder#hasSameOrderableAs(Order)
 	 */
@@ -146,13 +147,13 @@ public class DrugOrderTest {
 	public void hasSameOrderableAs_shouldReturnFalseIfBothDrugsAreNullAndTheConceptsAreDifferent() {
 		DrugOrder order = new DrugOrder();
 		order.setConcept(new Concept());
-		
+
 		DrugOrder otherOrder = new DrugOrder();
 		otherOrder.setConcept(new Concept());
-		
+
 		assertFalse(order.hasSameOrderableAs(otherOrder));
 	}
-	
+
 	/**
 	 * @see DrugOrder#hasSameOrderableAs(Order)
 	 */
@@ -163,14 +164,14 @@ public class DrugOrderTest {
 		Drug drug1 = new Drug();
 		drug1.setConcept(concept);
 		order.setDrug(drug1);
-		
+
 		DrugOrder otherOrder = new DrugOrder();
 		otherOrder.setConcept(concept);
 		assertEquals(order.getConcept(), otherOrder.getConcept());//sanity check
-		
+
 		assertFalse(order.hasSameOrderableAs(otherOrder));
 	}
-	
+
 	/**
 	 * @see DrugOrder#hasSameOrderableAs(Order)
 	 */
@@ -179,16 +180,16 @@ public class DrugOrderTest {
 		DrugOrder order = new DrugOrder();
 		Concept concept = new Concept();
 		order.setConcept(concept);
-		
+
 		DrugOrder otherOrder = new DrugOrder();
 		Drug drug1 = new Drug();
 		drug1.setConcept(concept);
 		otherOrder.setDrug(drug1); //should set the concept
 		assertEquals(order.getConcept(), otherOrder.getConcept());//sanity check
-		
+
 		assertFalse(order.hasSameOrderableAs(otherOrder));
 	}
-	
+
 	/**
 	 * @see DrugOrder#hasSameOrderableAs(Order)
 	 */
@@ -199,17 +200,17 @@ public class DrugOrderTest {
 		Drug drug1 = new Drug();
 		drug1.setConcept(concept);
 		order.setDrug(drug1); //should set concept
-		
+
 		DrugOrder otherOrder = new DrugOrder();
 		Drug drug2 = new Drug();
 		drug2.setConcept(concept);
 		otherOrder.setDrug(drug2);
 		//sanity check
 		assertTrue(order.getConcept() != null && otherOrder.getConcept() != null);
-		
+
 		assertFalse(order.hasSameOrderableAs(otherOrder));
 	}
-	
+
 	/**
 	 * @see DrugOrder#hasSameOrderableAs(Order)
 	 */
@@ -218,13 +219,13 @@ public class DrugOrderTest {
 		DrugOrder order = new DrugOrder();
 		Concept concept = new Concept();
 		order.setConcept(concept);
-		
+
 		DrugOrder otherOrder = new DrugOrder();
 		otherOrder.setConcept(concept);
-		
+
 		assertTrue(order.hasSameOrderableAs(otherOrder));
 	}
-	
+
 	/**
 	 * @see DrugOrder#hasSameOrderableAs(Order)
 	 */
@@ -235,19 +236,19 @@ public class DrugOrderTest {
 		Drug drug1 = new Drug();
 		drug1.setConcept(concept);
 		order.setDrug(drug1);
-		
+
 		DrugOrder otherOrder = new DrugOrder();
 		otherOrder.setDrug(drug1);
-		
+
 		assertTrue(order.hasSameOrderableAs(otherOrder));
 	}
-	
+
 	@Test
 	public void shouldSetDefaultDosingTypeToFreeText() {
 		DrugOrder drugOrder = new DrugOrder();
 		assertEquals(SimpleDosingInstructions.class, drugOrder.getDosingType());
 	}
-	
+
 	@Test
 	public void shouldAllowToSetCustomDosingTypes() {
 		DrugOrder drugOrder = new DrugOrder();
@@ -258,7 +259,49 @@ public class DrugOrderTest {
 		assertEquals(customDosingInstructions.getClass(), dosingInstructionsObject.getClass());
 		assertEquals(customDosingInstructions.getClass(), drugOrder.getDosingType());
 	}
-	
+
+
+  @Test
+  public void shouldAllowToSetChemoAdminDosingTypes_DefaultEmptyInstructions() {
+    DrugOrder drugOrder = new DrugOrder();
+    assertEquals(SimpleDosingInstructions.class, drugOrder.getDosingType());
+    ChemoAdminDosingInstructions chemoAdminDosingInstructions = new ChemoAdminDosingInstructions();
+    drugOrder.setDosingType(chemoAdminDosingInstructions.getClass());
+
+    //System.err.printf("shouldAllowToSetChemoAdminDosingTypes(): do = %s\n",drugOrder.toString());
+    //System.err.printf("shouldAllowToSetChemoAdminDosingTypes(): di = %s\n",chemoAdminDosingInstructions.toString());
+    //System.err.printf("shouldAllowToSetChemoAdminDosingTypes(): di.getDosingInstructionsAsString() = %s\n",chemoAdminDosingInstructions.getDosingInstructionsAsString(Locale.getDefault()));
+
+    DosingInstructions dosingInstructionsObject = drugOrder.getDosingInstructionsInstance();
+    assertEquals(chemoAdminDosingInstructions.getClass(), dosingInstructionsObject.getClass());
+    assertEquals(chemoAdminDosingInstructions.getClass(), drugOrder.getDosingType());
+  }
+
+
+  @Test
+	public void shouldAllowToSetChemoAdminDosingTypes_SetInstructions() {
+		DrugOrder drugOrder = new DrugOrder();
+		assertEquals(SimpleDosingInstructions.class, drugOrder.getDosingType());
+		ChemoAdminDosingInstructions chemoAdminDosingInstructions = new ChemoAdminDosingInstructions();
+		drugOrder.setDosingType(chemoAdminDosingInstructions.getClass());
+    chemoAdminDosingInstructions.setDosingAdjustmentPercentage(-20);
+    chemoAdminDosingInstructions.setDosingDilutionInstructions("Mix prescribed dose / volume with 250mL 0.9% NS.");
+    chemoAdminDosingInstructions.setDosingTimingInstructions("Infuse over 1 hours");
+
+    //System.err.printf("shouldAllowToSetChemoAdminDosingTypes(): do = %s\n",drugOrder.toString());
+    //System.err.printf("shouldAllowToSetChemoAdminDosingTypes(): di = %s\n",chemoAdminDosingInstructions.toString());
+    //System.err.printf("shouldAllowToSetChemoAdminDosingTypes(): di.getDosingInstructionsAsString() = %s\n",chemoAdminDosingInstructions.getDosingInstructionsAsString(Locale.getDefault()));
+
+    drugOrder.setDosingInstructions(chemoAdminDosingInstructions.getDosingInstructionsAsString(Locale.getDefault()));
+
+    //System.err.printf("shouldAllowToSetChemoAdminDosingTypes(): do = %s\n",drugOrder.toString());
+
+		DosingInstructions dosingInstructionsObject = drugOrder.getDosingInstructionsInstance();
+    assertTrue(drugOrder.getDosingInstructions() != null && chemoAdminDosingInstructions.getDosingInstructionsAsString(Locale.getDefault()) != null);
+		assertEquals(chemoAdminDosingInstructions.getClass(), dosingInstructionsObject.getClass());
+		assertEquals(chemoAdminDosingInstructions.getClass(), drugOrder.getDosingType());
+	}
+
 	/**
 	 * @see DrugOrder#setAutoExpireDateBasedOnDuration()
 	 */
@@ -270,12 +313,12 @@ public class DrugOrderTest {
 		when(drugOrder.getDosingInstructionsInstance()).thenReturn(dosingInstructions);
 		Date expectedAutoExpireDate = new Date();
 		when(dosingInstructions.getAutoExpireDate(drugOrder)).thenReturn(expectedAutoExpireDate);
-		
+
 		drugOrder.setAutoExpireDateBasedOnDuration();
-		
+
 		assertEquals(expectedAutoExpireDate, drugOrder.getAutoExpireDate());
 	}
-	
+
 	/**
 	 * @see DrugOrder#setAutoExpireDateBasedOnDuration()
 	 */
@@ -285,12 +328,12 @@ public class DrugOrderTest {
 		drugOrder.setAction(Order.Action.DISCONTINUE);
 		Date expectedAutoExpireDate = new Date();
 		drugOrder.setAutoExpireDate(expectedAutoExpireDate);
-		
+
 		drugOrder.setAutoExpireDateBasedOnDuration();
-		
+
 		assertEquals(expectedAutoExpireDate, drugOrder.getAutoExpireDate());
 	}
-	
+
 	/**
 	 * @see DrugOrder#setAutoExpireDateBasedOnDuration()
 	 */
@@ -299,9 +342,9 @@ public class DrugOrderTest {
 		DrugOrder drugOrder = new DrugOrder();
 		Date expectedAutoExpireDate = new Date();
 		drugOrder.setAutoExpireDate(expectedAutoExpireDate);
-		
+
 		drugOrder.setAutoExpireDateBasedOnDuration();
-		
+
 		assertEquals(expectedAutoExpireDate, drugOrder.getAutoExpireDate());
 	}
 
