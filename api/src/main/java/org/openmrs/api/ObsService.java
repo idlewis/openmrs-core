@@ -18,6 +18,7 @@ import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.Order;
 import org.openmrs.Person;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.db.ObsDAO;
@@ -197,6 +198,19 @@ public interface ObsService extends OpenmrsService {
 	public List<Obs> getObservationsByPerson(Person who);
 	
 	/**
+	 * Get all Observations for the given order, sorted by obsDatetime ascending. Does not return
+	 * voided observations.
+	 * 
+	 * @param order the order to match on
+	 * @return a List&lt;Obs&gt; object containing all non-voided observations for the specified order
+	 * @see #getObservations(List, List, List, List, List, List, List, Integer, Integer, Date, Date, List,
+	 *      boolean)
+	 * @should get all observations assigned to given person
+	 */
+	@Authorized(PrivilegeConstants.GET_OBS)
+	public List<Obs> getObservationsByOrder(Order order);
+
+	/**
 	 * This method fetches observations according to the criteria in the given arguments. All
 	 * arguments are optional and nullable. If more than one argument is non-null, the result is
 	 * equivalent to an "and"ing of the arguments. (e.g. if both a <code>location</code> and a
@@ -281,6 +295,57 @@ public interface ObsService extends OpenmrsService {
 	        List<Concept> answers, List<PERSON_TYPE> personTypes, List<Location> locations, List<String> sort,
 	        Integer mostRecentN, Integer obsGroupId, Date fromDate, Date toDate, boolean includeVoidedObs,
 	        String accessionNumber) throws APIException;
+	
+	/**
+	 * @see org.openmrs.api.ObsService#getObservations(java.util.List, java.util.List,
+	 *      java.util.List, java.util.List, java.util.List, java.util.List, java.util.List,
+	 *      java.lang.Integer, java.lang.Integer, java.util.Date, java.util.Date, boolean, java.util.List)
+	 *
+	 * This method works exactly the same as the above methods; it only adds Order search criteria.
+	 * It effectively surpasses the above method; the old one is however kept for backward
+	 * compatibility reasons.
+	 *
+	 * @param whom List&lt;Person&gt; to restrict obs to (optional)
+	 * @param encounters List&lt;Encounter&gt; to restrict obs to (optional)
+	 * @param questions List&lt;Concept&gt; to restrict the obs to (optional)
+	 * @param answers List&lt;Concept&gt; to restrict the valueCoded to (optional)
+	 * @param personTypes List&lt;PERSON_TYPE&gt; objects to restrict this to. Only used if
+	 *            <code>whom</code> is an empty list (optional)
+	 * @param locations The org.openmrs.Location objects to restrict to (optional)
+	 * @param sort list of column names to sort on (obsId, obsDatetime, etc) if null, defaults to
+	 *            obsDatetime (optional)
+	 * @param mostRecentN restrict the number of obs returned to this size (optional)
+	 * @param obsGroupId the Obs.getObsGroupId() to this integer (optional)
+	 * @param fromDate the earliest Obs date to get (optional)
+	 * @param toDate the latest Obs date to get (optional)
+	 * @param includeVoidedObs true/false whether to also include the voided obs (required)
+	 * @param accessionNumber accession number (optional)
+	 * @param orders List&lt;Order&gt; to restrict the obs to (optional)
+	 * @return list of Observations that match all of the criteria given in the arguments
+	 * @since 1.12
+	 * @throws APIException
+	 * @should compare dates using lte and gte
+	 * @should get all obs assigned to given encounters
+	 * @should get all obs with question concept in given questions parameter
+	 * @should get all obs with answer concept in given answers parameter
+	 * @should return all obs whose person is a person only
+	 * @should return obs whose person is a patient only
+	 * @should return obs whose person is a user only
+	 * @should return obs with location in given locations parameter
+	 * @should sort returned obs by obsDatetime if sort is empty
+	 * @should sort returned obs by conceptId if sort is concept
+	 * @should limit number of obs returned to mostReturnN parameter
+	 * @should return obs whose groupId is given obsGroupId
+	 * @should not include voided obs
+	 * @should include voided obs if includeVoidedObs is true
+	 * @should only return observations with matching accession number
+	 * @should get all obs assigned to given orders
+	 */
+	@Authorized(PrivilegeConstants.GET_OBS)
+	public List<Obs> getObservations(List<Person> whom, List<Encounter> encounters, List<Concept> questions,
+	        List<Concept> answers, List<PERSON_TYPE> personTypes, List<Location> locations, List<String> sort,
+	        Integer mostRecentN, Integer obsGroupId, Date fromDate, Date toDate, boolean includeVoidedObs,
+	        String accessionNumber, List<Order> orders) throws APIException;
 	
 	/**
 	 * This method fetches the count of observations according to the criteria in the given

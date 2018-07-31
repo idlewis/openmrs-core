@@ -17,6 +17,7 @@ import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.Order;
 import org.openmrs.Person;
 import org.openmrs.api.ObsService;
 import org.openmrs.util.OpenmrsConstants.PERSON_TYPE;
@@ -42,18 +43,17 @@ public interface ObsDAO {
 	 * @see org.openmrs.api.ObsService#purgeObs(Obs)
 	 */
 	public void deleteObs(Obs obs) throws DAOException;
-		
+
 	/**
 	 * @see org.openmrs.api.ObsService#getObservations(java.util.List, java.util.List,
 	 *      java.util.List, java.util.List, java.util.List, java.util.List, java.util.List,
 	 *      java.lang.Integer, java.lang.Integer, java.util.Date, java.util.Date, boolean,
-	 *      java.lang.String)
+	 *      java.lang.String, java.util.List)
 	 */
 	public List<Obs> getObservations(List<Person> whom, List<Encounter> encounters, List<Concept> questions,
 	        List<Concept> answers, List<PERSON_TYPE> personTypes, List<Location> locations, List<String> sort,
 	        Integer mostRecentN, Integer obsGroupId, Date fromDate, Date toDate, boolean includeVoidedObs,
-	        String accessionNumber) throws DAOException;
-	
+	        String accessionNumber, List<Order> orders) throws DAOException;
 	/**
 	 * @see org.openmrs.api.ObsService#getObservationCount(java.util.List, java.util.List,
 	 *      java.util.List, java.util.List, java.util.List, java.util.List, java.lang.Integer,
