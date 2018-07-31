@@ -32,7 +32,7 @@ public class ChemoAdminDosingInstructions implements DosingInstructions {
 	@Override
 	public String getDosingInstructionsAsString(Locale locale) {
 
-    System.out.printf("ENTER ChemoAdminDosingInstructions::getDosingInstructionsAsString(): %s\n",locale.toString());
+    //System.out.printf("ENTER ChemoAdminDosingInstructions::getDosingInstructionsAsString(): %s\n",locale.toString());
 
     // canonical format of encoded chemo admin dosing instruction string:
     // "{"adjustment": "<int>", "dilution": "<string>", "timing": "<string>"}
@@ -47,7 +47,7 @@ public class ChemoAdminDosingInstructions implements DosingInstructions {
     encodedInstructions.append(this.getDosingTimingInstructions());
     encodedInstructions.append("\"}");
 
-    System.out.printf("EXIT ChemoAdminDosingInstructions::setDosingInstructions(): %s\n",encodedInstructions.toString());
+    //System.out.printf("EXIT ChemoAdminDosingInstructions::setDosingInstructions(): %s\n",encodedInstructions.toString());
 
     // return seralized JSON string containing chemo admin dosing instructions
 		return encodedInstructions.toString();
@@ -69,12 +69,10 @@ public class ChemoAdminDosingInstructions implements DosingInstructions {
     // canonical format of encoded chemo admin dosing instruction string:
     // "{"adjustment": "<int>", "dilution": "<string>", "timing": "<string>"}
 
-    //order.setDosingInstructions("I added this in ChemoAdminDosingInstructions::setDosingInstructions() method!!");
-
     //System.err.printf("EXIT ChemoAdminDosingInstructions::setDosingInstructions(): %s\n",order.toString());
 
     // store dosing instructions seralized JSON string into DrugOrder object
-		//order.setDosingInstructions(getDosingInstructionsAsString(Locale.getDefault()));
+		order.setDosingInstructions(getDosingInstructionsAsString(Locale.getDefault()));
 	}
 
 	/**
