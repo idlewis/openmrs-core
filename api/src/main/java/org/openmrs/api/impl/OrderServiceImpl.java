@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.proxy.HibernateProxy;
@@ -121,6 +122,12 @@ public class OrderServiceImpl extends BaseOpenmrsService implements OrderService
 			if (order.getId() == null) {
 				order.setEncounter(orderGroup.getEncounter());
 				saveOrder(order, null);
+			}
+		}
+		Set<OrderGroup> nestedGroups = orderGroup.getNestedOrderGroups();
+		if (nestedGroups != null) {
+			for (OrderGroup nestedGroup : nestedGroups) {
+				Context.getOrderService().saveOrderGroup(nestedGroup);
 			}
 		}
 		return orderGroup;
