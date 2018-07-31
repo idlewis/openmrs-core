@@ -1975,4 +1975,19 @@ public class ObsServiceTest extends BaseContextSensitiveTest {
 		assertThat(existing.getVoided(), is(true));
 		assertThat(newObs.getStatus(), is(Obs.Status.FINAL));
 	}
+	
+	/**
+	 * @see ObsService#getObservations(List,List,List,List,List,List,List,Integer,Integer,Date,Date,boolean)
+	 * @see ObsService#getObservations(List,List,List,List,List,List,List,Integer,Integer,Date,Date,boolean,String)
+	 * @see ObsService#getObservations(List,List,List,List,List,List,List,Integer,Integer,Date,Date,boolean,String, List)
+	 */
+	@Test
+	public void getObservations_shouldGetAllObsAssignedToGivenOrders() {
+		ObsService obsService = Context.getObsService();
+		
+		List<Obs> obss = obsService.getObservations(null, null, null, null, null,
+		    null, null, null, null, null, null, false, null, Collections.singletonList(new Order(42)));
+		
+		Assert.assertEquals(1, obss.size());
+	}
 }
