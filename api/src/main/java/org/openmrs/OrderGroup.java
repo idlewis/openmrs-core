@@ -11,6 +11,7 @@ package org.openmrs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.openmrs.api.APIException;
 
@@ -40,6 +41,8 @@ public class OrderGroup extends BaseCustomizableData<OrderGroupAttribute> {
 	private OrderGroup parentOrderGroup;
 	
 	private OrderGroup previousOrderGroup;
+	
+	private Set<OrderGroup> nestedOrderGroups;
 	
 	/**
 	 * Gets the orderGroupId
@@ -256,6 +259,22 @@ public class OrderGroup extends BaseCustomizableData<OrderGroupAttribute> {
 	 */
 	public void setPreviousOrderGroup(OrderGroup previousOrderGroup) {
 		this.previousOrderGroup = previousOrderGroup;
+	}
+	
+	/**
+	 * Gets the nestedOrderGroups
+	 * @return nestedOrderGroups
+	 */
+	public Set<OrderGroup> getNestedOrderGroups() {
+		return this.nestedOrderGroups;
+	}
+	
+	/**
+	 * Sets the nestedOrderGroups
+	 * @param nestedOrderGroups
+	 */
+	public void setNestedOrderGroups(Set<OrderGroup> nestedOrderGroups) {
+		this.nestedOrderGroups = nestedOrderGroups;
 	}
 	
 }
