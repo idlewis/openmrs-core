@@ -1977,12 +1977,28 @@ public class ObsServiceTest extends BaseContextSensitiveTest {
 	}
 	
 	/**
+	 * @see ObsService#getObservationsByOrder(Order)
+	 */
+	@Test
+	public void getObservationsByOrder_shouldGetAllObsAssignedToGivenOrders() {
+		executeDataSet(INITIAL_OBS_XML);
+		
+		ObsService obsService = Context.getObsService();
+		
+		List<Obs> obss = obsService.getObservationsByOrder(new Order(42));
+		
+		Assert.assertEquals(1, obss.size());
+	}
+
+	/**
 	 * @see ObsService#getObservations(List,List,List,List,List,List,List,Integer,Integer,Date,Date,boolean)
 	 * @see ObsService#getObservations(List,List,List,List,List,List,List,Integer,Integer,Date,Date,boolean,String)
 	 * @see ObsService#getObservations(List,List,List,List,List,List,List,Integer,Integer,Date,Date,boolean,String, List)
 	 */
 	@Test
 	public void getObservations_shouldGetAllObsAssignedToGivenOrders() {
+		executeDataSet(INITIAL_OBS_XML);
+		
 		ObsService obsService = Context.getObsService();
 		
 		List<Obs> obss = obsService.getObservations(null, null, null, null, null,
