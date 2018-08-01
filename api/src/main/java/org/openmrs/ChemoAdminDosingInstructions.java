@@ -31,6 +31,20 @@ public class ChemoAdminDosingInstructions implements DosingInstructions {
 	 */
 	@Override
 	public String getDosingInstructionsAsString(Locale locale) {
+		StringBuilder dosingInstructions = new StringBuilder();
+		if (dosingAdjustmentPercentage != null) {
+			dosingInstructions.append(this.dosingAdjustmentPercentage);
+			dosingInstructions.append(" ");
+		}
+		if (dosingDilutionInstructions != null) {
+			dosingInstructions.append(this.dosingDilutionInstructions);
+			dosingInstructions.append(" ");
+		}
+		if (dosingTimingInstructions != null) {
+			dosingInstructions.append(this.dosingTimingInstructions);
+			dosingInstructions.append(" ");
+		}
+		return dosingInstructions.toString();
 
     //System.out.printf("ENTER ChemoAdminDosingInstructions::getDosingInstructionsAsString(): %s\n",locale.toString());
 
@@ -38,19 +52,19 @@ public class ChemoAdminDosingInstructions implements DosingInstructions {
     // "{"adjustment": "<int>", "dilution": "<string>", "timing": "<string>"}
 
     // encode chemo admin instructions into seralized JSON format for persisting as a string
-    StringBuilder encodedInstructions = new StringBuilder();
-    encodedInstructions.append("{\"adjustment\": \"");
-    encodedInstructions.append(Integer.toString(this.getDosingAdjustmentPercentage()));
-    encodedInstructions.append("\", \"dilution\": \"");
-    encodedInstructions.append(this.getDosingDilutionInstructions());
-    encodedInstructions.append("\", \"timing\": \"");
-    encodedInstructions.append(this.getDosingTimingInstructions());
-    encodedInstructions.append("\"}");
-
-    //System.out.printf("EXIT ChemoAdminDosingInstructions::setDosingInstructions(): %s\n",encodedInstructions.toString());
-
-    // return seralized JSON string containing chemo admin dosing instructions
-		return encodedInstructions.toString();
+//    StringBuilder encodedInstructions = new StringBuilder();
+//    encodedInstructions.append("{\"adjustment\": \"");
+//    encodedInstructions.append(Integer.toString(this.getDosingAdjustmentPercentage()));
+//    encodedInstructions.append("\", \"dilution\": \"");
+//    encodedInstructions.append(this.getDosingDilutionInstructions());
+//    encodedInstructions.append("\", \"timing\": \"");
+//    encodedInstructions.append(this.getDosingTimingInstructions());
+//    encodedInstructions.append("\"}");
+//
+//    //System.out.printf("EXIT ChemoAdminDosingInstructions::setDosingInstructions(): %s\n",encodedInstructions.toString());
+//
+//    // return seralized JSON string containing chemo admin dosing instructions
+//		return encodedInstructions.toString();
 	}
 
 	/**
